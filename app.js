@@ -29,7 +29,8 @@ initializeDBAndServer();
 // GET Players
 app.get("/players/", async (request, response) => {
   const getPlayersQuery = `
-    SELECT * FROM cricket_team
+    SELECT *
+    FROM cricket_team;
     `;
   const getPlayersList = await db.all(getPlayersQuery);
   response.send(getPlayersList);
@@ -37,13 +38,12 @@ app.get("/players/", async (request, response) => {
 
 // CREATE New Player
 app.post("/players/", async (request, response) => {
-  const { playerId } = request.params;
   const playerDetails = request.body;
   const { playerName, jerseyNumber, role } = playerDetails;
   const createPlayerQuery = `
-        INSERT INTO cricket_team (player_id, player_name, jersey_number, role)
+        INSERT INTO cricket_team (player_name, jersey_number, role)
         VALUES (
-            ${playerId},
+            
             "${playerName}",
              ${jerseyNumber},
             "${role}"
@@ -54,7 +54,7 @@ app.post("/players/", async (request, response) => {
 });
 
 // GET player
-app.get("/players/:playerId", async (request, response) => {
+app.get("/players/:playerId/", async (request, response) => {
   let { playerId } = request.params;
   let getPlayerQuery = `
     SELECT *
