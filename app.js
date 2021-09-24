@@ -29,7 +29,8 @@ initializeDBAndServer();
 // GET Players
 app.get("/players/", async (request, response) => {
   const getPlayersQuery = `
-    SELECT *
+    SELECT player_id as playerId, player_name as playerName,
+    jersey_number as jerseyNumber, role
     FROM cricket_team;
     `;
   const getPlayersList = await db.all(getPlayersQuery);
@@ -57,9 +58,13 @@ app.post("/players/", async (request, response) => {
 app.get("/players/:playerId/", async (request, response) => {
   let { playerId } = request.params;
   let getPlayerQuery = `
-    SELECT *
-     FROM cricket_team
-      WHERE player_id = ${playerId}
+    SELECT
+        player_id as playerId, player_name as playerName,
+        jersey_number as jerseyNumber, role
+     FROM
+         cricket_team
+      WHERE
+         player_id = ${playerId}
     `;
   const getPlayer = await db.get(getPlayerQuery);
   response.send(getPlayer);
